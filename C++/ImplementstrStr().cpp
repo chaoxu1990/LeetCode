@@ -86,3 +86,35 @@ public:
         return nullptr;
     }
 };
+
+
+//solution 3:
+//opensource from:
+//http://www.opensource.apple.com/source/xnu/xnu-792.13.8/libsa/strstr.c
+//actually, it's still brute force.
+
+class Solution {
+public:
+
+    char *strStr(char *in, char *str) {
+    char c;
+    size_t len;
+
+    c = *str++;
+    if (!c)
+        return (char *) in;	// Trivial empty string case
+
+    len = strlen(str);
+    do {
+        char sc;
+
+        do {
+            sc = *in++;
+            if (!sc)
+                return (char *) 0;
+        } while (sc != c);
+    } while (strncmp(in, str, len) != 0);
+
+    return (char *) (in - 1);
+}
+};
