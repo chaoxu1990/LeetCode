@@ -69,4 +69,38 @@ public:
     }
 };
 
-//Solution 3: there should be iteration with O(1) space and O(n) time.
+//Solution 3: Morris iteration with O(1) space and O(n) time.
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode *root) {
+       vector<int> result;
+       TreeNode *cur = root, *pre = NULL;
+       while(cur != NULL)
+       {
+           if(!cur->left)
+           {
+               result.push_back(cur->val);
+               cur = cur->right;
+           }
+           else
+           {
+               pre = cur->left;
+
+               while(pre->right && pre->right != cur)
+                    pre = pre->right;
+               if(!pre->right)
+               {
+                   result.push_back(cur->val);
+                   pre->right = cur;
+                   cur = cur->left;
+               }
+               else
+               {
+                   pre->right = NULL;
+                   cur = cur->right;
+               }
+           }
+       }
+       return result;
+    }
+};

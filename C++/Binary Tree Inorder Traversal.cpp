@@ -76,3 +76,41 @@ public:
         return result;
     }
 };
+
+//Solution No.3: Morris iteration with O(n) time and O(1) space
+
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode *root) {
+
+        vector<int> result;
+        TreeNode *cur = root, *pre = NULL;
+
+        while(cur != NULL)
+        {
+            if(cur->left == NULL)
+            {
+                result.push_back(cur->val);
+                cur = cur->right;
+            }
+            else
+            {
+                pre = cur->left;
+                while(pre->right != NULL && pre->right != cur)
+                    pre = pre->right;
+                if(pre->right == NULL)
+                {
+                    pre->right = cur;
+                    cur = cur->left;
+                }
+                else
+                {
+                    result.push_back(cur->val);
+                    pre->right = NULL;
+                    cur = cur->right;
+                }
+            }
+        }
+        return result;
+    }
+};

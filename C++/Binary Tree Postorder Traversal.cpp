@@ -72,3 +72,64 @@ public:
        return result;
     }
 };
+
+//Solution No.3 Morris traversal with constant space and O(n) time.
+class Solution {
+public:
+    vector<int> result;
+    void reverse(TreeNode * from, TreeNode *to)
+    {
+        if(from == to) return;
+        TreeNode *x = from, *y = from->right, *z = NULL;
+
+        while(x != to)
+        {
+            z = y->right;
+            y->right = x;
+            x = y;
+            y = z;
+        }
+    }
+    void print(TreeNode *from, TreeNode *to)
+    {
+        reverse(from, to);
+        TreeNode *p = to;
+        while(true)
+        {
+            result.push_back(p->val);
+            if(p == from) break;
+            p = p->right;
+        }
+        reverse(to, from);
+    }
+    vector<int> postorderTraversal(TreeNode *root) {
+
+        TreeNode *cur = new TreeNode(-1), *pre = NULL;
+        cur->left = root;
+
+        while(cur != NULL)
+        {
+            if(cur->left == NULL)
+                cur = cur->right;
+
+            else
+            {
+                pre = cur -> left;
+                while(pre->right != NULL && pre->right != cur)
+                    pre = pre->right;
+                if(pre->right == NULL)
+                {
+                    pre->right = cur;
+                    cur = cur->left;
+                }
+                else
+                {
+                    print(cur->left, pre);
+                    pre->right = NULL;
+                    cur = cur->right;
+                }
+            }
+        }
+        return result;
+    }
+};
