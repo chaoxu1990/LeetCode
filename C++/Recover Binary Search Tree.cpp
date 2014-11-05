@@ -17,6 +17,7 @@ A solution using O(n) space is pretty straight forward. Could you devise a const
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+//Solution No.1: using recursion, not actually constant space.
 class Solution {
 public:
     TreeNode *first;
@@ -40,6 +41,64 @@ public:
 
     void recoverTree(TreeNode *root) {
         pre = NULL;
+        first = NULL;
+        second = NULL;
+
+        inorder(root);
+
+        swap(first->val, second->val);
+    }
+};
+
+//Solution No.2: using Morris iteration, constant space.
+
+class Solution {
+public:
+    TreeNode *first;
+    TreeNode *second;
+
+    void inorder(TreeNode *root)
+    {
+       TreeNode* cur = root, *pre = NULL;
+       while(cur != NULL)
+       {
+           if(cur->left == NULL)
+           {
+               detect(pre,cur);
+               pre = cur;
+               cur = cur->right;
+           }
+           else
+           {
+               TreeNode *tmp = cur->left;
+               while(tmp->right != NULL && tmp->right != cur)
+                    tmp = tmp->right;
+               if(tmp->right == NULL)
+               {
+                   tmp->right = cur;
+                   cur = cur->left;
+               }
+               else
+               {
+                   detect(pre, cur);
+                   tmp->right = NULL;
+                   pre = cur;
+                   cur = cur->right;
+               }
+           }
+       }
+    }
+
+    void detect(TreeNode *pre, TreeNode *cur)
+    {
+        if(pre != NULL && pre->val > cur->val)
+        {
+            if(first == NULL){first = pre;}
+            second = cur;
+        }
+    }
+
+    void recoverTree(TreeNode *root) {
         first = NULL;
         second = NULL;
 
