@@ -50,3 +50,29 @@ public:
         return result;
     }
 };
+
+//Another better solution form book
+int read4(char *buf);
+
+class Solution {
+public:
+    /**
+     * @param buf Destination buffer
+     * @param n   Maximum number of characters to read
+     * @return    The number of characters read
+     */
+    int read(char *buf, int n) {
+        int readBytes = 0;
+        bool eof = false;
+
+        while(eof == false && readBytes < n)
+        {
+            int sz = read4(buf + readBytes);
+            if(sz < 4) eof = true;
+            int bytes = min(sz, n-readBytes);
+            readBytes += bytes;
+        }
+
+        return readBytes;
+    }
+};
