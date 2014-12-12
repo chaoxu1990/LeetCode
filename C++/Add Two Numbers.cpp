@@ -85,3 +85,47 @@ public:
         return result;
     }
 };
+
+//A better One
+
+class Solution {
+public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+        int tmp = 0, carry = 0;
+        ListNode *h1, *h2, *result, *idx;
+        bool first = false;
+        h1 = l1;
+        h2 = l2;
+        result = new ListNode(-1);
+        idx = result;
+        while(h1 != NULL || h2 != NULL)
+        {
+            int num1 = h1 == NULL?0:h1->val;
+            int num2 = h2 == NULL?0:h2->val;
+            tmp = num1 + num2 + carry;
+            carry = tmp>9?1:0;
+            ListNode* tmpNode = new ListNode(tmp % 10);
+            
+            if(first == false)
+            {
+                result->next = tmpNode;
+                idx = tmpNode;
+                first = true;
+            }
+            else
+            {
+                idx->next = tmpNode;
+                idx = tmpNode;
+            }
+            
+            h1 = h1 == NULL? NULL:h1->next;
+            h2 = h2 == NULL? NULL:h2->next;
+        }
+        if(carry == 1)
+        {
+            ListNode* tmpNode = new ListNode(1);
+            idx->next = tmpNode;
+        }
+        return result->next;
+    }
+};
