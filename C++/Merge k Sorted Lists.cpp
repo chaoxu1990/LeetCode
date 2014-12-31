@@ -62,3 +62,52 @@ public:
         return head->next;
     }
 };
+
+
+
+//Solution No.2 Using MinHeap
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    struct cmp{
+        bool operator()(ListNode *a, ListNode *b)
+        {
+            return a->val>b->val;
+        }
+    };
+    
+    ListNode *mergeKLists(vector<ListNode *> &lists) {
+        vector<ListNode *> tmp;
+        for(int i = 0; i < lists.size(); ++i)
+        {
+            ListNode *idx = lists[i];
+            while(idx != NULL)
+            {
+                tmp.push_back(idx);
+                idx = idx -> next;
+            }
+        }
+        
+        make_heap(tmp.begin(), tmp.end(), cmp());
+        
+        ListNode *fakedHead = new ListNode(-1);
+        ListNode *runner = fakedHead;
+        while(tmp.empty() == false)
+        {
+            runner -> next = tmp.front();
+            runner = runner -> next;
+            pop_heap(tmp.begin(), tmp.end(), cmp());
+            tmp.pop_back();
+        }
+        runner->next = NULL;        
+        return fakedHead->next;
+    }
+};

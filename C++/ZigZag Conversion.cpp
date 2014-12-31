@@ -51,3 +51,30 @@ public:
         return output;
     }
 };
+
+
+//Another better mathematical Solution:
+class Solution {
+public:
+    string convert(string s, int nRows) {
+        if(nRows <= 1) return s;
+        string result;
+        int zigsize = nRows*2 - 2;
+        for(int i = 0; i<nRows; ++i)
+        {
+            for(int j = i; j<s.length(); j += zigsize)
+            {
+                if(j>=s.length()) break;
+                result += s[j];          
+                if(i>0 && i<nRows - 1)
+                {
+                   int idx = j + zigsize - 2*i;
+                   if(idx < s.length())
+                        result += s[idx];
+                }
+            }
+        }
+        
+        return result;
+    }
+};

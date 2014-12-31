@@ -36,3 +36,26 @@ public:
         return result * sign;
     }
 };
+
+
+//Adding overflow detect
+class Solution {
+public:
+    int reverse(int x) {
+        long long int result = 0;
+        bool positive = true;
+        if(x<0) positive = false;
+        
+        x = abs(x);
+        while(x)
+        {
+            int digit = x%10;
+            result = result*10 + digit;
+            x /= 10;
+        }
+        
+        if(positive == false) result *= -1;
+        if(result<INT_MIN || result > INT_MAX) result = 0;
+        return result;
+    }
+};
