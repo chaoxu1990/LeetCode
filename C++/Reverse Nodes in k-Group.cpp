@@ -63,3 +63,49 @@ public:
         return fakedHead->next;
     }
 };
+
+
+
+//Solution No.2, using the result of "Reverse Linked List II"
+
+class Solution {
+public:
+    ListNode *reverseKGroup(ListNode *head, int k) {
+     ListNode *fakedHead = new ListNode(-1);
+     fakedHead->next = head;
+     ListNode *idx = fakedHead;
+     for(int i = 0; idx != NULL;i++)
+     {
+         if(i != 0 && i%k == 0)
+         {
+            idx = idx->next;
+            head = reverseBetween(head, i-k+1, i);
+            continue;
+         }
+         idx = idx->next;
+     }
+     
+     return head;
+    }
+    
+    ListNode *reverseBetween(ListNode *head, int m, int n) {
+        ListNode *fakedHead = new ListNode(-1);
+        fakedHead->next = head;
+        ListNode *pre = fakedHead, *cur, *next;
+        
+        for(int i = 0; i<m-1; ++i)
+            pre = pre -> next;
+        
+        cur = pre->next;
+        next = cur->next;
+        for(int i = 0; i<n-m; ++i)
+        {
+            cur->next = next->next;
+            next -> next = pre -> next;
+            pre -> next = next;
+            next = cur->next;
+        }
+        
+        return fakedHead->next;
+    }
+};
