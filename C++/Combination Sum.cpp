@@ -21,15 +21,18 @@ public:
         vector<vector<int> > result;
         vector<int> tmp_result;
         sort(candidates.begin(), candidates.end());
-        return helper(candidates, target, tmp_result, result, 0);
+        helper(candidates, target, tmp_result, result, 0);
+		
+		return result;
     }
 
     vector<vector<int> > helper(vector<int> &candidates, int target, vector<int> &tmp_result, vector<vector<int> > &result, int index)
     {
-        if(target < 0) return result;
-        if(target == 0){result.push_back(tmp_result); return result;}
-        if(index >= candidates.size()) return result;
+        if(target < 0) return;
+        if(target == 0){result.push_back(tmp_result); return;}
 
+		//for(int i = 0; i<candidates.size(); ++i)  worng!!!
+		//will introduce duplicate and cause output limited exceed error.
         for(int i = index; i<candidates.size(); ++i)
         {
             if(target<candidates[i]) break;
@@ -38,6 +41,6 @@ public:
             tmp_result.pop_back();
         }
 
-        return result;
+        return;
     }
 };
