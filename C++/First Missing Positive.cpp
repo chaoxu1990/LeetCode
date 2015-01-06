@@ -13,28 +13,22 @@ Your algorithm should run in O(n) time and uses constant space.
 class Solution {
 public:
     int firstMissingPositive(int A[], int n) {
-        helper(A, n);
-
-        for(int i = 0; i<n; ++i)
+        if(n == 0) return 1;
+        
+        for(int i = 0; i<n;)
+        {
+            if(A[i] == A[A[i] - 1] || A[i] > n || A[i] <= 0 || A[i] == i + 1){i++; continue;}
+            else{
+                swap(A[i], A[A[i] - 1]);
+            }
+        }
+        
+        for(int i = 0; i<n; i++)
         {
             if(A[i] != i+1)
                 return i+1;
         }
-
+        
         return n+1;
-    }
-
-    void helper(int A[], int n)
-    {
-        for(int i = 0; i<n; ++i)
-        {
-            while(A[i] != i+1)
-            {
-                if(A[i] <= 0 || A[i] >=n || A[i] == A[A[i] - 1])
-                    break;
-                else
-                    swap(A[i], A[A[i] - 1]);
-            }
-        }
     }
 };

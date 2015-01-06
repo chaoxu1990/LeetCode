@@ -39,3 +39,40 @@ public:
         return;
     }
 };
+
+
+//Another solution using O(n) space
+class Solution {
+public:
+    vector<vector<int> > permute(vector<int> &num) {
+        vector<vector<int> > result;
+        vector<int> tmp;
+        vector<bool> used(num.size(), false);
+        helper(num, tmp, result, used);
+        
+        return result;
+    }
+    
+    void helper(vector<int> &num, vector<int> tmp, vector<vector<int> > &result, vector<bool>& used)
+    {
+        if(tmp.size() == num.size())
+        {
+            result.push_back(tmp);
+            return;
+        }
+        
+        for(int i = 0; i<num.size(); i++)
+        {
+            if(used[i] == false)
+            {
+                tmp.push_back(num[i]);
+                used[i] = true;
+                helper(num, tmp, result, used);
+                tmp.pop_back();
+                used[i] = false;
+            }
+        }
+        
+        return;
+    }
+};
