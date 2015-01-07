@@ -13,29 +13,14 @@ Could you do this in-place?
 class Solution {
 public:
     void rotate(vector<vector<int> > &matrix) {
-        if(matrix.size() == 0) return;
-        int tmp = 0, row = matrix.size(), col = row;
-
-        for(int i = 0; i<row; ++i)
-        {
-            for(int j = 0; j<col-i; ++j)
-            {
-                tmp = matrix[i][j];
-                matrix[i][j] = matrix[col - j - 1][row - i - 1];
-                matrix[col - j - 1][row - i - 1] = tmp;
-            }
-        }
-
-        for(int i = 0; i<row/2; ++i)
-        {
-            for(int j = 0; j<col; ++j)
-            {
-                tmp = matrix[i][j];
-                matrix[i][j] = matrix[row-i-1][j];
-                matrix[row-i-1][j] = tmp;
-            }
-        }
-
-        return;
+        int rowNum = matrix.size(), colNum = matrix[0].size();
+        
+        for(int i = 0; i<rowNum; i++)
+            for(int j = 0; j<colNum/2; j++)
+                swap(matrix[i][j], matrix[i][colNum-j-1]);
+                
+        for(int i = 0; i<rowNum; i++)
+            for(int j = 0; j<rowNum-i-1; j++)
+                swap(matrix[i][j], matrix[colNum-j-1][rowNum-i-1]);        
     }
 };

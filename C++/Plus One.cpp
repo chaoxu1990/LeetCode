@@ -9,23 +9,17 @@ The digits are stored such that the most significant digit is at the head of the
 class Solution {
 public:
     vector<int> plusOne(vector<int> &digits) {
-        bool carry = true;
-        for(int i = digits.size() - 1; i>=0; --i)
+        int carry = 1;
+        for(int i = digits.size() - 1; i >= 0; i--)
         {
-            if(carry == true)
-            {
-                digits[i] += 1;
-                if(digits[i] == 10)
-                {
-                    digits[i] = 0;
-                }
-                else carry = false;
-            }
+            digits[i] += carry;
+            carry = digits[i]/10;
+            digits[i] %= 10;
+            
         }
-
-        if(carry == true)
-            digits.insert(digits.begin(), 1);
-
+        
+        if(carry)digits.insert(digits.begin(), carry);
+        
         return digits;
     }
 };

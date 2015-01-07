@@ -61,3 +61,32 @@ vector<Interval> insert(vector<Interval> &intervals, Interval newInterval) {
         return intervals;
     }
 };
+
+//A better solution from: http://yucoding.blogspot.com/2013/01/leetcode-question-51-merge-intervals.html
+
+class Solution {
+public:
+    static bool cmp(Interval& a, Interval& b)
+    {
+        return (a.start<b.start);
+    }
+    vector<Interval> merge(vector<Interval> &intervals) {
+        vector<Interval>result;
+        sort(intervals.begin(), intervals.end(), cmp);
+        
+        for(int i = 0; i<intervals.size(); i++)
+        {
+            if(i==0)result.push_back(intervals[i]);
+            else if(intervals[i].start <= result.back().end)
+            {
+                result.back().end = max(result.back().end, intervals[i].end);
+            }
+            else
+            {
+                result.push_back(intervals[i]);
+            }
+        }
+        
+        return result;
+    }
+};

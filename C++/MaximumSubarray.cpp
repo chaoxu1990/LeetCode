@@ -20,3 +20,22 @@ public:
         return global;
     }
 };
+
+
+//Second solution consider tmp_result is larger than 0 or not.
+
+class Solution {
+public:
+    int maxSubArray(int A[], int n) {
+        int result = INT_MIN, tmp = 0;
+        
+        for(int i = 0; i<n; i++)
+        {
+            tmp += A[i];
+            result = max(result, tmp);
+            if(tmp < 0) tmp = 0;
+        }
+        
+        return result;
+    }
+};

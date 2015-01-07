@@ -25,60 +25,53 @@ There exist two distinct solutions to the 4-queens puzzle:
 
 class Solution {
 public:
-    bool isValid(const vector<string> &board, int row, int col, int n)
-    {
-        for(int i = 0; i<n; ++i)
-        {
-            if(( i != row && board[i][col] == 'Q')
-             ||( i != col && board[row][i] == 'Q'))
-              return false;
-        }
-        for(int j = 1; j<n; ++j)
-        {
-            if(row + j < n)
-            {
-                if(col + j < n)
-                    if(board[row+j][col+j] == 'Q')
-                        return false;
-                if(col - j >= 0)
-                    if(board[row+j][col-j] == 'Q')
-                        return false;
-            }
-            if(row - j >= 0)
-            {
-                if(col + j < n)
-                    if(board[row-j][col+j] == 'Q')
-                        return false;
-                if(col - j >= 0)
-                    if(board[row-j][col-j] == 'Q')
-                        return false;
-            }
-        }
-        return true;
-    }
-    void helper(vector<vector<string> > &result, vector<string> &tmp, int row, int col, int cnt, int n)
-    {
-        if(row >= n)
-        {
-            if(cnt == n)
-                result.push_back(tmp);
-            return;
-        }
-            for(int j = 0; j<n; ++j)
-            {
-                if(tmp[row][j] == '.' && isValid(tmp, row, j, n) == true)
-                {
-                    tmp[row][j] = 'Q';
-                    helper(result, tmp, row+1, j, cnt + 1, n);
-                    tmp[row][j] = '.';
-                }
-            }
-    }
     vector<vector<string> > solveNQueens(int n) {
-        vector<vector<string> > result;
-        vector<string> tmp(n, string(n,'.'));
-        helper(result, tmp, 0,0, 0, n);
-
+        vector<vector<string>> result;
+        vector<string> tmp_result(n, string(n, '.'));
+        helper(result, tmp_result, n, 0);
         return result;
+    }
+    
+    void helper(vector<vector<string> > &result, vector<string> tmp_result, int n, int row)
+    {
+        if(row == n){result.push_back(tmp_result);return;}
+        
+        for(int i = 0; i<n; i++)
+            if(isValid(row, i, tmp_result, n))
+            {
+                tmp_result[row][i] = 'Q';
+                helper(result, tmp_result, n, row+1);
+                tmp_result[row][i] = '.';
+            }
+    }
+    
+    bool isValid(int row, int col, vector<string> tmp_result, int n)
+    {
+        //check col
+        for(int i = 0; i<n; i++)
+            if(tmp_result[i][col] == 'Q')
+                return false;
+        //check diagonal
+        
+        for(int i = 0; i<n; i++)
+        {
+            if(row - i >= 0 && col - i >= 0)
+                if(tmp_result[row-i][col-i] == 'Q')
+                    return false;
+
+            if(row - i >= 0 && col + i < n)
+                if(tmp_result[row-i][col+i] == 'Q')
+                    return false;
+
+            if(row + i < n && col - i >= 0)
+                if(tmp_result[row+i][col-i] == 'Q')
+                    return false;
+                    
+            if(row + i < n && col + i < n)
+                if(tmp_result[row+i][col+i] == 'Q')
+                    return false;
+        }
+        
+        return true;
     }
 };
