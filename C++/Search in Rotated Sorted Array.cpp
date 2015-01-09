@@ -38,3 +38,36 @@ public:
         return -1;
     }
 };
+
+
+//Solution No.2: Combine two binary search in one.
+//From: http://fisherlei.blogspot.com/2013/01/leetcode-search-for-range.html
+class Solution {
+public:
+    int search(int A[], int n, int target) {
+        int l = 0, r = n-1, m = 0;
+        
+        while(l<=r)
+        {
+            m = l + (r-l)/2;
+            if(A[m] == target) return m;
+            if(A[m] >= A[l])
+            {
+                if(A[l] <= target && target < A[m])
+                    r = m - 1;
+                else
+                    l = m + 1;
+            }
+            else
+            {
+                if(A[m] <  target && target <= A[r])
+                    l = m + 1;
+                else
+                    r = m - 1;
+            }
+            
+        }
+        
+        return -1;
+    }
+};
