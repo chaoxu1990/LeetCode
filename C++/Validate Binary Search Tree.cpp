@@ -21,19 +21,46 @@ Both the left and right subtrees must also be binary search trees.
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+//My solution, O(N^2)
 class Solution {
 public:
     bool isValidBST(TreeNode *root) {
+        if(root == NULL) return true;
+        if(checkLess(root, root->left) == false || checkGreater(root, root->right) == false) return false;
 
-        return isValidBST(root, INT_MIN, INT_MAX);
+        return isValidBST(root->left) && isValidBST(root->right);
     }
 
-    bool isValidBST(TreeNode *root, int min, int max)
+    bool checkLess(TreeNode *root, TreeNode *check)
     {
-        if(!root) return true;
+        if(check == NULL) return true;
+        if(check -> val >= root -> val) return false;
+        return checkLess(root, check->left) && checkLess(root, check->right);
+    }
 
-        return root->val > min && root->val <max
-            && isValidBST(root->left, min, root->val)
-            && isValidBST(root->right, root->val, max);
+
+    bool checkGreater(TreeNode *root, TreeNode *check)
+    {
+        if(check == NULL) return true;
+        if(check -> val <= root -> val) return false;
+        return checkGreater(root, check->left) && checkGreater(root, check->right);
+    }
+};
+
+//Another better solution from Google, O(n)
+class Solution {
+public:
+    bool isValidBST(TreeNode *root) {
+        return isValid(root, INT_MIN, INT_MAX);
+    }
+
+    bool isValid(TreeNode *root, int left, int right)
+    {
+        if(root == NULL)return true;
+        if(root->val == INT_MIN && root->left != NULL)return false;
+        if(root->val == INT_MAX && root->right != NULL) return false;
+        if(root->val > right || root->val < left) return false;
+
+        return isValid(root->left, left, root->val - 1) && isValid(root->right, root->val + 1, right);
     }
 };
