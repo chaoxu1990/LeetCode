@@ -46,3 +46,27 @@ public:
         return res[s.size() - 1];
     }
 };
+
+
+//A more concise solution
+class Solution {
+public:
+    int minCut(string s) {
+        int len = s.size();
+        vector<vector<bool> > table(len, vector<bool>(len, false));
+        vector<int> res(len+1, INT_MAX);
+        for(int i = 0; i<=len; i++)res[i] = len - i - 1;
+        
+        
+        for(int i = len-1; i>-1; i--)
+            for(int j = i; j<len; j++)
+                if((s[i] == s[j]) && ((j-i < 2) || (table[i+1][j-1] == true)))
+                {
+                    table[i][j] = true;
+                    res[i] = min(res[i], res[j+1] + 1);
+                }
+        
+        
+        return res[0];
+    }
+};
