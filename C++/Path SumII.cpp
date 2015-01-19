@@ -59,3 +59,32 @@ public:
     }
 
 };
+
+//Solution No.2 updated on Jan 11th
+
+class Solution {
+public:
+    vector<vector<int> > pathSum(TreeNode *root, int sum) {
+        vector<vector<int> > result;
+        vector<int> tmp;
+        DFS(root, sum, result, tmp);
+        return result;
+    }
+    void DFS(TreeNode *root, int sum, vector<vector<int> > &result, vector<int> tmp)
+    {
+        if(root == NULL) return;
+
+        tmp.push_back(root->val);
+
+        if(root->left == NULL && root->right == NULL && sum == root->val)
+        {
+                result.push_back(tmp);
+                return;
+        }
+        DFS(root->left, sum-root->val, result, tmp);
+        DFS(root->right, sum-root->val, result, tmp);
+
+        tmp.pop_back();
+
+    }
+};
