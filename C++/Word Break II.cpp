@@ -15,36 +15,35 @@ A solution is ["cats and dog", "cat sand dog"].
 class Solution {
 public:
     vector<string> wordBreak(string s, unordered_set<string> &dict) {
-        vector<string> result;
-        if(s.size() == 0) return result;
-        string tmp = "";
-        vector<bool> check(s.size(), true);
-        helper(result, tmp, 0, s, dict, check);
-        return result;
+        vector<string> ret;
+        string tmp;
+        vector<bool> table(s.size() + 1, true);
+        
+        DFS(s, dict, tmp, ret, table, 0);
+        
+        return ret;
     }
-
-    void helper(vector<string> &result, string &tmp, int index, string s, unordered_set<string> &dict, vector<bool>& check)
+    
+    void DFS(string s, unordered_set<string> &dict, string tmp, vector<string> &ret, vector<bool> &table, int depth)
     {
-        if(index >= s.size())
+        if(depth == s.size())
         {
-            tmp.erase(tmp.end()-1);
-            result.push_back(tmp);
+            tmp.pop_back();
+            ret.push_back(tmp);
             return;
         }
-
-        for(int i = 1; i + index<=s.size(); ++i)
+        
+        
+        for(int i = depth + 1; i <= s.size(); i++)
         {
-            string cur = s.substr(index, i);
-            if(dict.find(cur) != dict.end() && check[i+index] == true)
-            {
-                string old_tmp = tmp;
-                tmp = tmp + cur + " ";
-                int size = result.size();
-                helper(result, tmp, index + i, s, dict, check);
-                tmp = old_tmp;
-                if(size == result.size())
-                    check[i+index] = false;
-            }
+           string cur = s.substr(depth, i-depth);
+           if(dict.find(cur) != dict.end() && table[depth] == true)
+           {
+                int size = ret.size();
+                DFS(s, dict, tmp + cur + " ", ret, table, i);
+                if(ret.size() == size)
+                table[i] = false;
+           }
         }
     }
 };

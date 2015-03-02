@@ -41,3 +41,23 @@ public:
         return result;
     }
 };
+
+
+//More concise solution with same logical above
+
+class Solution {
+public:
+    int longestConsecutive(vector<int> &num) {
+        map<int,bool>table;
+        int left = 0, right = 0, result = 0;
+        for(int i:num)table[i] = true;
+        for(int i:num)
+        {
+            left = right = 1;
+            while(table.find(i-left) != table.end() && table[i-left] == true)table[i-left++]=false;
+            while(table.find(i+right) != table.end() && table[i+right] == true)table[i+right++]=false;
+            result = max(result,(right+left-1));
+        }
+        return result;
+    }
+};

@@ -17,80 +17,51 @@ If there are multiple such windows, you are guaranteed that there will always be
 class Solution {
 public:
     string minWindow(string S, string T) {
-        if(S.size() == 0) return "";
-        if(T.size() > S.size()) return "";
-        map<char, int>table1, table2;
-        int cnt = T.size();
-        int right = 0, left = 0;
-        int faster = 0, slower = 0;
-        for(int i = 0; i<T.size(); ++i) table1[T[i]]++;
-
-        while(cnt>0&&faster<S.size())
-        {
-            if(table1.find(S[faster]) != table1.end())
-            {
-                table2[S[faster]]++;
-                if(table2[S[faster]] <= table1[S[faster]])
-                    cnt--;
-            }
-            faster++;
-        }
+        map<char, int>tableS, tableT;
+        int cnt = 0, result_cnt = INT_MAX, result_start = 0;
+        bool found = false;
         for(int i = 0; i<T.size(); ++i)
+            tableT[T[i]]++;
+        
+        for(int fast = 0, slow = 0; fast<S.size();fast++)
         {
-            if(table1[T[i]] > table2[T[i]])
-            return "";
-        }
-
-        for(int i = 0; i<S.size(); ++i)
-        {
-            if(table1.find(S[i]) != table1.end())
+            if(tableT.find(S[fast]) != tableT.end())
             {
-                slower = i;
-                break;
-            }
-        }
-
-        left = slower;
-        right = faster;
-
-        while(slower < faster)
-        {
-            if(table2.find(S[slower]) != table2.end())
-            {
-                table2[S[slower]]--;
-                if(table2[S[slower]] < table1[S[slower]])
+                if(tableS[S[fast]] < tableT[S[fast]])
+                    cnt++;
+                
+                tableS[S[fast]]++;
+                    
+                if(cnt < T.size()){continue;}
+               
+                while(slow<=fast)
                 {
-                    while(faster++ < S.size())
+                    if(tableT.find(S[slow]) != tableT.end())
                     {
-                        if(table2.find(S[faster-1]) != table2.end())
+                        if(cnt == T.size())
                         {
-                            if(S[faster-1] != S[slower])
+                            if(fast-slow+1 < result_cnt)
                             {
-                                table2[S[faster-1]]++;
-                            }
-                            else
-                            {
-                                table2[S[faster-1]]++;
-                                break;
+                                found = true;
+                                result_cnt = fast-slow+1;
+                                result_start = slow;
                             }
                         }
+                    
+                        tableS[S[slow]]--;
+                        if(tableS[S[slow]] < tableT[S[slow]])
+                            cnt--;
+                            
+                        if(cnt < T.size()){slow++; break;}
                     }
-                }
-                if(table2[S[slower]] < table1[S[slower]])
-                    break;
-                else
-                {
-                    while(table1.find(S[++slower]) == table1.end());
-                    if(faster - slower< right - left)
-                    {
-                        right = faster;
-                        left = slower;
-                    }
-                    continue;
+                    slow++;
                 }
             }
-            slower++;
         }
-        return S.substr(left, right-left);
+        
+        if(found == true)
+            return S.substr(result_start, result_cnt);
+        else 
+            return "";
     }
 };

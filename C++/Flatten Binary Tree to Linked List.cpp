@@ -36,7 +36,7 @@ If you notice carefully in the flattened tree, each node's right child points to
  * };
  */
 
-//Solution No.1:
+//Solution No.1, O(n^2):
 class Solution {
 public:
     void flatten(TreeNode *root) {
@@ -60,7 +60,7 @@ public:
 };
 
 
-//Solution No.2:
+//Solution No.2, O(n):
 
 class Solution {
 public:
@@ -82,7 +82,7 @@ public:
     }
 };
 
-//Solution No.3:
+//Solution No.3, O(n):
 
 class Solution {
 public:
