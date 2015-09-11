@@ -37,6 +37,8 @@ public:
             }
 
         }
+                
+        if(result < 0) return INT_MAX;
         return sign>0?result:-result;
     }
 };
