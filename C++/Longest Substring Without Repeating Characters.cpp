@@ -30,3 +30,27 @@ public:
         return maxLen;
     }
 };
+
+//Another version using two pointers and hashset
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_set<char> helper;
+        int p1= 0, p2 = 0, result = 0, tmp_result = 0;
+        while(p2 < s.length())
+        {
+            if(helper.find(s[p2]) == helper.end())
+                helper.insert(s[p2]);
+            else
+            {
+                result = max(result, p2-p1);
+                while(s[p2] != s[p1++])
+                    helper.erase(s[p1-1]);
+            }
+            p2++;
+        }
+        return max(result, p2-p1);
+    }
+};
+
