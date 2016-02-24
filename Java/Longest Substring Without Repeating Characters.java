@@ -10,7 +10,7 @@ substring is "b", with the length of 1.
 
 public class Solution {
     public int lengthOfLongestSubstring(String s) {
-        HashSet helper = new HashSet();
+        HashSet<Character> helper = new HashSet<Character>();
         int result = 0, p1 = 0, p2 = 0;
         while(p2 < s.length())
         {
